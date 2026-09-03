@@ -3794,9 +3794,8 @@ function seoSlug(value){
 }
 
 function seoNewsKey(item){
-  return seoSlug(item.judul || item.Judul || 'berita') +
-    '--' +
-    encodeURIComponent(String(item.id || item.ID || Date.now()));
+  const slug=seoSlug(item.slug||item.judul||item.Judul||'berita');
+  return slug+'--'+encodeURIComponent(String(item.id||item.ID||Date.now()));
 }
 
 function seoNewsUrl(item){
@@ -3833,16 +3832,20 @@ function seoSetStructuredData(obj){
 }
 
 function normalizeBeritaItem(item){
-  item = item || {};
+  item=item||{};
   return {
-    id: item.id || item.ID || '',
-    judul: item.judul || item.Judul || '',
-    tanggal: item.tanggal || item.Tanggal || '',
-    kategori: item.kategori || item.Kategori || '',
-    gambar: item.gambar || item.Gambar || item.FotoUtama || item.fotoUtama || '',
-    fotoTambahan: item.fotoTambahan || item.FotoTambahan || '',
-    isi: item.isi || item.Isi || '',
-    aktif: item.aktif || item.Aktif || 'YA'
+    id:item.id||item.ID||'',
+    judul:item.judul||item.Judul||'',
+    tanggal:item.tanggal||item.Tanggal||'',
+    kategori:item.kategori||item.Kategori||'',
+    gambar:item.gambar||item.Gambar||item.FotoUtama||item.fotoUtama||'',
+    fotoTambahan:item.fotoTambahan||item.FotoTambahan||'',
+    isi:item.isi||item.Isi||'',
+    slug:item.slug||item.Slug||'',
+    metaDescription:item.metaDescription||item.MetaDescription||'',
+    keywords:item.keywords||item.Keywords||'',
+    altText:item.altText||item.AltText||'',
+    aktif:item.aktif||item.Aktif||'YA'
   };
 }
 
@@ -3891,6 +3894,8 @@ function seoUpdateHome(data){
   seoSetMeta('meta[property="og:url"]',SEO_SITE_URL);
   seoSetMeta('meta[name="twitter:title"]',title);
   seoSetMeta('meta[name="twitter:description"]',description);
+  seoSetMeta('meta[name="keywords"]','MI Al Huda Kramat, MI Al Huda Kramat Tegal, madrasah Kramat, sekolah Tegal, berita MI Al Huda Kramat, prestasi siswa, PPDB MI Al Huda Kramat');
+  seoSetMeta('meta[name="keywords"]',item.keywords || 'MI Al Huda Kramat, MI Al Huda Kramat Tegal, madrasah Kramat');
 
   if(profil.logo) seoSetFavicon(profil.logo);
 
@@ -3916,7 +3921,7 @@ function seoUpdateArticle(data, item){
   const profil = (data.Profil && data.Profil[0]) || {};
   const schoolName = profil.nama || 'MI Al Huda Kramat';
   const title = seoText(item.judul) + ' | ' + schoolName;
-  const description = seoDescription(item.isi,160);
+  const description = seoDescription(item.metaDescription || item.isi,160);
   const url = seoNewsUrl(item);
   const image = item.gambar || profil.logo || '';
 
@@ -4003,7 +4008,7 @@ function renderSeoArticleIfRequested(data){
         <img
           class="seo-article-image"
           src="${escapeHTML(item.gambar)}"
-          alt="${escapeHTML(item.judul)}"
+          alt="${escapeHTML(item.altText || item.judul)}"
           loading="eager"
           decoding="async">
       ` : ''}
