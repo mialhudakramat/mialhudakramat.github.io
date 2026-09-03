@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://script.google.com/macros/s/AKfycbyFNNMjDsAqXm8_pjia8yLN-u3vrQjCjSm8p6IGmwrcHOnCpNJjWM_ILgFjYGdahbYJ/exec?api=sitemap
+Sitemap: https://mialhudakramat.github.io/sitemap.xml
