@@ -72,17 +72,21 @@
     ===================================================== */
 
     .seo-article-view {
-      max-width: 1100px;
-      margin: 35px auto 55px;
-      padding: 0 20px;
+      width: 100%;
+      max-width: none;
+      margin: 0 0 55px;
+      padding: 0;
+      scroll-margin-top: 95px;
     }
 
     .seo-article-card {
+      width: 100%;
       background: #ffffff;
       border-radius: 18px;
       padding: 28px;
       box-shadow: 0 8px 30px rgba(0,0,0,.08);
       border: 1px solid rgba(7,84,62,.10);
+      overflow: hidden;
     }
 
     .seo-breadcrumb {
@@ -113,10 +117,23 @@
     .seo-article-image {
       display: block;
       width: 100%;
-      max-height: 620px;
-      object-fit: cover;
+      height: auto;
+      max-height: none;
+      object-fit: contain;
+      object-position: center;
       border-radius: 14px;
-      margin: 0 auto 24px;
+      margin: 0 auto 28px;
+      background: #f4f7f5;
+    }
+
+    /* Saat membuka detail berita, hanya artikel yang tampil
+       di kolom utama; sidebar tetap berada di kanan. */
+    .website-main-content.seo-detail-mode > section:not(#seoArticleView) {
+      display: none !important;
+    }
+
+    .website-main-content.seo-detail-mode #seoArticleView {
+      display: block;
     }
 
     .seo-article-content {
@@ -153,6 +170,11 @@
     @media (max-width: 700px) {
       .seo-article-card {
         padding: 20px;
+        border-radius: 14px;
+      }
+
+      .seo-article-image {
+        border-radius: 10px;
       }
 
       .seo-article-content {
@@ -2292,7 +2314,8 @@ img#heroLogo {
 
   position:sticky;
 
-  top:95px;
+  top:90px;
+  align-self:start;
 
 }
 
@@ -3248,6 +3271,17 @@ img#heroLogo {
 
   <main class="website-main-content">
 
+    <!-- =====================================================
+         DETAIL BERITA SEO
+         Tetap berada di kolom utama agar sidebar kanan
+         tetap tampil pada halaman detail berita.
+    ====================================================== -->
+    <section id="seoArticleView"
+             class="seo-article-view"
+             hidden
+             aria-label="Detail berita">
+    </section>
+
 
     <!-- ===============================================
          BERITA
@@ -3432,16 +3466,6 @@ img#heroLogo {
 
 
   </main>
-
-  <!-- =====================================================
-       DETAIL BERITA SEO
-       Aktif otomatis ketika URL memiliki ?berita=...
-  ====================================================== -->
-  <section id="seoArticleView"
-           class="seo-article-view"
-           hidden
-           aria-label="Detail berita">
-  </section>
 
 
   <!-- =================================================
@@ -3968,13 +3992,17 @@ function renderSeoArticleIfRequested(data){
 
   const item = seoFindNews(data);
 
+  const mainContent = document.querySelector('.website-main-content');
+
   if(!item){
     box.hidden = true;
+    if(mainContent) mainContent.classList.remove('seo-detail-mode');
     seoUpdateHome(data);
     return;
   }
 
   box.hidden = false;
+  if(mainContent) mainContent.classList.add('seo-detail-mode');
   seoUpdateArticle(data,item);
 
   const paragraphs = String(item.isi || '')
