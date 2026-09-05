@@ -195,6 +195,17 @@ footer{
  .brand-text{display:none}.navlinks a{padding:8px 7px;font-size:10px}
  .home-shell{grid-template-columns:minmax(0,1fr) 300px}
 }
+
+/* SHARE BERITA */
+.share-box{margin-top:26px;padding:18px;border-top:1px solid #e6eee9;background:#f7fbf9;border-radius:16px}
+.share-title{font-weight:800;color:#07543e;margin-bottom:12px}
+.share-buttons{display:flex;flex-wrap:wrap;gap:9px}
+.share-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;transition:.2s}
+.share-btn:hover{transform:translateY(-1px);filter:brightness(.98)}
+.share-wa{background:#25D366;color:#fff}.share-fb{background:#1877F2;color:#fff}.share-copy{background:#07543e;color:#fff}.share-native{background:#e9b949;color:#17382d}
+.share-status{display:block;margin-top:9px;font-size:12px;color:#55736a;min-height:17px}
+.detail-title{margin:8px 0 0}
+
 @media(max-width:800px){
  body{overflow-y:auto}.hero{min-height:430px}.hero-logo{width:125px;height:125px}
  .hero-school-name{font-size:35px}.hero-tagline{font-size:14px}
@@ -334,7 +345,7 @@ footer{
 
     <!-- Link Facebook diarahkan ke pencarian halaman sampai URL halaman resmi diberikan -->
     <a class="footer-contact-link"
-       href="https://www.facebook.com/profile.php?id=61584016063330"
+       href="https://www.facebook.com/search/pages/?q=MI%20Al%20Huda%20Kramat"
        target="_blank"
        rel="noopener"
        aria-label="Facebook MI Al Huda Kramat">
@@ -402,7 +413,20 @@ function cardsOrEmpty(arr,fn,msg='Belum ada data.'){return Array.isArray(arr)&&a
 
 function toggleMenu(){$('navMenu').classList.toggle('show')}
 function closeMenu(){$('navMenu').classList.remove('show')}
+function getNewsIdFromUrl(){
+ const params=new URLSearchParams(location.search);
+ return params.get('berita') || '';
+}
+function newsUrl(id){
+ const url=new URL(location.href);
+ url.search='';
+ url.hash='';
+ url.searchParams.set('berita',String(id));
+ return url.href;
+}
 function routeFromHash(){
+ const newsId=getNewsIdFromUrl();
+ if(newsId)return 'detail-berita';
  let h=location.hash.replace(/^#/,'').trim();
  if(h==='detail-berita')return 'detail-berita';
  return ['home','berita','pengumuman','agenda','galeri','prestasi','ppdb','profil'].includes(h)?h:'home';
@@ -463,12 +487,70 @@ function renderBerita(d){
  $('homeNewsGrid').innerHTML=cardsOrEmpty(a.slice(0,6),newsCard,'Belum ada berita.');
  $('beritaGrid').innerHTML=cardsOrEmpty(a,newsCard,'Belum ada berita.');
 }
-function openNews(id){
+function openNews(id, updateUrl=true){
  const x=(DATA.Berita||[]).find(y=>String(y.id)===String(id));
- if(!x)return;
+ if(!x){
+   $('detailBerita').innerHTML='<div class="empty">Berita tidak ditemukan.</div>';
+   showPage('detail-berita');
+   return;
+ }
  const photos=[...(x.gambar?[x.gambar]:[]),...parsePhotos(x.fotoTambahan)].filter(Boolean);
- $('detailBerita').innerHTML=`<div class="detail-box"><div class="detail-content"><a href="#berita" class="back-button">← Kembali ke Berita</a><div class="date">📅 ${esc(formatDate(x.tanggal))}${x.kategori?' · '+esc(x.kategori):''}</div><h1>${esc(x.judul||'')}</h1></div>${x.gambar?`<img class="detail-main-image" src="${esc(imageUrl(x.gambar))}" alt="${esc(x.judul||'')}">`:''}<div class="detail-content"><div class="article-text">${esc(x.isi||'')}</div>${photos.length>1?`<div class="detail-gallery">${photos.map(u=>`<img src="${esc(imageUrl(u))}" alt="${esc(x.judul||'')}" onclick="window.open('${esc(imageUrl(u))}','_blank')">`).join('')}</div>`:''}</div></div>`;
- location.hash='#detail-berita';showPage('detail-berita');
+ const shareUrl=newsUrl(x.id);
+ const shareText=`${x.judul||'Berita MI Al Huda Kramat'} - MI Al Huda Kramat`;
+ $('detailBerita').innerHTML=`<div class="detail-box">
+   <div class="detail-content">
+     <a href="#berita" class="back-button" onclick="backToNews(event)">← Kembali ke Berita</a>
+     <div class="date">📅 ${esc(formatDate(x.tanggal))}${x.kategori?' · '+esc(x.kategori):''}</div>
+     <h1 class="detail-title">${esc(x.judul||'')}</h1>
+   </div>
+   ${x.gambar?`<img class="detail-main-image" src="${esc(imageUrl(x.gambar))}" alt="${esc(x.judul||'')}">`:''}
+   <div class="detail-content">
+     <div class="article-text">${esc(x.isi||'')}</div>
+     ${photos.length>1?`<div class="detail-gallery">${photos.map(u=>`<img src="${esc(imageUrl(u))}" alt="${esc(x.judul||'')}" onclick="window.open('${esc(imageUrl(u))}','_blank')">`).join('')}</div>`:''}
+     <div class="share-box">
+       <div class="share-title">🔗 Bagikan Berita Ini</div>
+       <div class="share-buttons">
+         <a class="share-btn share-wa" href="https://wa.me/?text=${encodeURIComponent(shareText+'\n'+shareUrl)}" target="_blank" rel="noopener">🟢 WhatsApp</a>
+         <a class="share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}" target="_blank" rel="noopener">📘 Facebook</a>
+         <button class="share-btn share-copy" type="button" onclick="copyNewsLink('${esc(x.id)}')">🔗 Salin Link</button>
+         ${navigator.share?`<button class="share-btn share-native" type="button" onclick="shareNews('${esc(x.id)}')">📤 Bagikan</button>`:''}
+       </div>
+       <span id="shareStatus" class="share-status"></span>
+     </div>
+   </div>
+ </div>`;
+ if(updateUrl){
+   history.pushState({beritaId:String(x.id)},'',shareUrl);
+ }
+ showPage('detail-berita');
+}
+function backToNews(e){
+ if(e)e.preventDefault();
+ history.pushState({},'',location.pathname+location.search.replace(/([?&])berita=[^&]*(&|$)/,'').replace(/[?&]$/,''));
+ location.hash='#berita';
+ showPage('berita');
+}
+async function copyNewsLink(id){
+ const url=newsUrl(id);
+ try{
+   await navigator.clipboard.writeText(url);
+   const s=$('shareStatus');if(s)s.textContent='✓ Link berita berhasil disalin.';
+ }catch(err){
+   window.prompt('Salin link berita berikut:',url);
+ }
+}
+async function shareNews(id){
+ const x=(DATA.Berita||[]).find(y=>String(y.id)===String(id));
+ if(!x || !navigator.share)return;
+ try{
+   await navigator.share({
+     title:x.judul||'Berita MI Al Huda Kramat',
+     text:`${x.judul||'Berita MI Al Huda Kramat'} - MI Al Huda Kramat`,
+     url:newsUrl(id)
+   });
+ }catch(err){
+   if(err && err.name!=='AbortError')console.error(err);
+ }
 }
 function renderAgenda(d){
  const a=d.Agenda||[];
@@ -541,10 +623,25 @@ function renderWebsite(d){
  DATA=d||{};
  renderProfil(DATA);renderPengumuman(DATA);renderBerita(DATA);renderAgenda(DATA);renderGaleri(DATA);renderPrestasi(DATA);renderPPDB(DATA);
  renderSidebarNews(DATA.Berita||[]);renderSidebarNewsSlider(DATA.Berita||[]);renderSidebarAgenda(DATA.Agenda||[]);renderSidebarGallery(DATA.Galeri||[]);
- showPage(routeFromHash());
+ const newsId=getNewsIdFromUrl();
+ if(newsId){
+   openNews(newsId,false);
+ }else{
+   showPage(routeFromHash());
+ }
 }
 window.addEventListener('hashchange',()=>showPage(routeFromHash()));
 $('year').textContent=new Date().getFullYear();
+window.addEventListener('popstate',function(){
+ const newsId=getNewsIdFromUrl();
+ if(newsId){openNews(newsId,false);return}
+ showPage(routeFromHash());
+});
+window.addEventListener('hashchange',function(){
+ if(getNewsIdFromUrl())return;
+ showPage(routeFromHash());
+});
+
 loadPublicData();
 </script>
 </body>
