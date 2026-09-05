@@ -413,6 +413,13 @@ function cardsOrEmpty(arr,fn,msg='Belum ada data.'){return Array.isArray(arr)&&a
 
 function toggleMenu(){$('navMenu').classList.toggle('show')}
 function closeMenu(){$('navMenu').classList.remove('show')}
+function newsKey(x){
+ const id=String((x&&x.id)||'').trim();
+ if(id) return id;
+ const title=String((x&&x.judul)||'berita').toLowerCase().trim();
+ const date=String((x&&x.tanggal)||'').trim();
+ return (title+'-'+date).replace(/[^a-z0-9]+/gi,'-').replace(/^-+|-+$/g,'');
+}
 function getNewsIdFromUrl(){
  const params=new URLSearchParams(location.search);
  return params.get('berita') || '';
@@ -423,6 +430,9 @@ function newsUrl(id){
  url.hash='';
  url.searchParams.set('berita',String(id));
  return url.href;
+}
+function findNews(key){
+ return (DATA.Berita||[]).find(function(y){ return newsKey(y)===String(key); });
 }
 function routeFromHash(){
  const newsId=getNewsIdFromUrl();
@@ -447,7 +457,7 @@ function imageHTML(url,alt){
 }
 
 function newsCard(x){
- return `<article class="card news-card click-card" onclick="openNews('${esc(x.id||'')}')">
+ return `<article class="card news-card click-card" onclick="openNews('${esc(newsKey(x))}')">
  ${imageHTML(x.gambar,x.judul)}
  <div class="card-body">
  <div class="date">📅 ${esc(formatDate(x.tanggal))}${x.kategori?' · '+esc(x.kategori):''}</div>
@@ -488,14 +498,14 @@ function renderBerita(d){
  $('beritaGrid').innerHTML=cardsOrEmpty(a,newsCard,'Belum ada berita.');
 }
 function openNews(id, updateUrl=true){
- const x=(DATA.Berita||[]).find(y=>String(y.id)===String(id));
+ const x=findNews(id);
  if(!x){
    $('detailBerita').innerHTML='<div class="empty">Berita tidak ditemukan.</div>';
    showPage('detail-berita');
    return;
  }
  const photos=[...(x.gambar?[x.gambar]:[]),...parsePhotos(x.fotoTambahan)].filter(Boolean);
- const shareUrl=newsUrl(x.id);
+ const shareUrl=newsUrl(newsKey(x));
  const shareText=`${x.judul||'Berita MI Al Huda Kramat'} - MI Al Huda Kramat`;
  $('detailBerita').innerHTML=`<div class="detail-box">
    <div class="detail-content">
@@ -512,15 +522,15 @@ function openNews(id, updateUrl=true){
        <div class="share-buttons">
          <a class="share-btn share-wa" href="https://wa.me/?text=${encodeURIComponent(shareText+'\n'+shareUrl)}" target="_blank" rel="noopener">🟢 WhatsApp</a>
          <a class="share-btn share-fb" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}" target="_blank" rel="noopener">📘 Facebook</a>
-         <button class="share-btn share-copy" type="button" onclick="copyNewsLink('${esc(x.id)}')">🔗 Salin Link</button>
-         ${navigator.share?`<button class="share-btn share-native" type="button" onclick="shareNews('${esc(x.id)}')">📤 Bagikan</button>`:''}
+         <button class="share-btn share-copy" type="button" onclick="copyNewsLink('${esc(newsKey(x))}')">🔗 Salin Link</button>
+         ${navigator.share?`<button class="share-btn share-native" type="button" onclick="shareNews('${esc(newsKey(x))}')">📤 Bagikan</button>`:''}
        </div>
        <span id="shareStatus" class="share-status"></span>
      </div>
    </div>
  </div>`;
  if(updateUrl){
-   history.pushState({beritaId:String(x.id)},'',shareUrl);
+   history.pushState({beritaId:newsKey(x)},'',shareUrl);
  }
  showPage('detail-berita');
 }
@@ -540,13 +550,13 @@ async function copyNewsLink(id){
  }
 }
 async function shareNews(id){
- const x=(DATA.Berita||[]).find(y=>String(y.id)===String(id));
+ const x=findNews(id);
  if(!x || !navigator.share)return;
  try{
    await navigator.share({
      title:x.judul||'Berita MI Al Huda Kramat',
      text:`${x.judul||'Berita MI Al Huda Kramat'} - MI Al Huda Kramat`,
-     url:newsUrl(id)
+     url:newsUrl(newsKey(x))
    });
  }catch(err){
    if(err && err.name!=='AbortError')console.error(err);
@@ -569,7 +579,7 @@ function renderPPDB(d){
 
 /* SIDEBAR */
 function renderSidebarNews(a){
- $('sidebarNews').innerHTML=a.length?a.slice(0,8).map(x=>`<a href="#detail-berita" class="sidebar-news-item" onclick="openNews('${esc(x.id||'')}')"><div class="sidebar-news-date">📅 ${esc(formatDate(x.tanggal))}</div><div class="sidebar-news-title">${esc(x.judul||'')}</div></a>`).join(''):'<div class="sidebar-empty">Belum ada berita.</div>';
+ $('sidebarNews').innerHTML=a.length?a.slice(0,8).map(x=>`<a href="#detail-berita" class="sidebar-news-item" onclick="openNews('${esc(newsKey(x))}')"><div class="sidebar-news-date">📅 ${esc(formatDate(x.tanggal))}</div><div class="sidebar-news-title">${esc(x.judul||'')}</div></a>`).join(''):'<div class="sidebar-empty">Belum ada berita.</div>';
 }
 function renderSidebarNewsSlider(a){
  sidebarNewsPhotos=[];a.forEach(x=>{if(x.gambar)sidebarNewsPhotos.push({url:x.gambar,id:x.id||'',title:x.judul||''});parsePhotos(x.fotoTambahan).forEach(u=>sidebarNewsPhotos.push({url:u,id:x.id||'',title:x.judul||''}))});
