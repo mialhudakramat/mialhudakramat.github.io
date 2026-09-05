@@ -378,6 +378,8 @@ footer{
 
 /* GANTI INI dengan URL Web App Apps Script Anda yang berakhiran /exec */
 const API_URL = 'https://script.google.com/macros/s/AKfycbyFNNMjDsAqXm8_pjia8yLN-u3vrQjCjSm8p6IGmwrcHOnCpNJjWM_ILgFjYGdahbYJ/exec';
+/* URL Web App Apps Script /exec untuk link share dengan preview foto + judul */
+const SHARE_API_URL = API_URL;
 
 let DATA={};
 let currentRoute='home';
@@ -430,6 +432,16 @@ function newsUrl(id){
  url.hash='';
  url.searchParams.set('berita',String(id));
  return url.href;
+}
+function shareUrlForNews(id){
+ const base=String(SHARE_API_URL||'').trim();
+ if(base && base.indexOf('GANTI_')!==0){
+   const u=new URL(base);
+   u.search=''; u.hash='';
+   u.searchParams.set('share',String(id));
+   return u.href;
+ }
+ return newsUrl(id);
 }
 function findNews(key){
  return (DATA.Berita||[]).find(function(y){ return newsKey(y)===String(key); });
@@ -505,7 +517,8 @@ function openNews(id, updateUrl=true){
    return;
  }
  const photos=[...(x.gambar?[x.gambar]:[]),...parsePhotos(x.fotoTambahan)].filter(Boolean);
- const shareUrl=newsUrl(newsKey(x));
+ const articleUrl=newsUrl(newsKey(x));
+ const shareUrl=shareUrlForNews(newsKey(x));
  const shareText=`${x.judul||'Berita MI Al Huda Kramat'} - MI Al Huda Kramat`;
  $('detailBerita').innerHTML=`<div class="detail-box">
    <div class="detail-content">
