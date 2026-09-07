@@ -370,8 +370,31 @@ footer{
   background:linear-gradient(135deg,#003b2a,#07543e);color:#fff;
   padding:35px 20px;text-align:center
 }
-footer h2{font-size:22px;margin-bottom:4px}
-footer p{color:#c9ddd5;font-size:12px}
+.footer-inner{
+  max-width:1100px;margin:0 auto;display:grid;
+  grid-template-columns:1.2fr 1px 1.8fr;align-items:center;gap:28px;
+  text-align:left;
+}
+.footer-brand{text-align:left}
+.footer-brand h2{font-size:22px;margin-bottom:4px}
+.footer-brand p{color:#c9ddd5;font-size:12px}
+.footer-divider{width:1px;height:105px;background:rgba(244,197,66,.65)}
+.footer-contact{text-align:left}
+.footer-contact-title{font-size:12px;font-weight:900;color:#f4d46a;margin-bottom:9px}
+.footer-contact a{display:flex;align-items:center;gap:9px;color:#fff;margin:7px 0;font-size:12px;font-weight:700}
+.footer-contact a:hover{color:#f4c542;text-decoration:underline}
+.footer-contact .contact-icon{
+  width:25px;height:25px;border-radius:7px;background:#fff;
+  display:inline-flex;align-items:center;justify-content:center;
+  flex:0 0 25px;font-size:15px;text-decoration:none
+}
+.footer-copy{margin-top:22px!important;color:#a9c6bb!important;font-size:10px!important}
+@media(max-width:700px){
+  .footer-inner{grid-template-columns:1fr;gap:16px;text-align:center}
+  .footer-brand,.footer-contact{text-align:center}
+  .footer-divider{width:80px;height:1px;margin:auto}
+  .footer-contact a{justify-content:center}
+}
 
 /* =========================================================
    RESPONSIVE
@@ -684,10 +707,26 @@ footer p{color:#c9ddd5;font-size:12px}
 </section>
 
 <footer>
-  <h2>MI AL HUDA KRAMAT</h2>
-  <p>Mendidik dengan Ilmu, Membentuk dengan Akhlak</p>
-  <br>
-  <p>© <span id="year"></span> MI Al Huda Kramat</p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h2>MI AL HUDA KRAMAT</h2>
+      <p>Mendidik dengan Ilmu, Membentuk dengan Akhlak</p>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-contact">
+      <div class="footer-contact-title">Untuk kritik, saran dan info tentang madrasah:</div>
+      <a href="https://wa.me/6287768117253" target="_blank" rel="noopener" aria-label="WhatsApp MI Al Huda Kramat">
+        <span class="contact-icon">📱</span> 0877-6811-7253
+      </a>
+      <a href="mailto:mi.alhudakramat@gmail.com" aria-label="Email MI Al Huda Kramat">
+        <span class="contact-icon">✉️</span> mi.alhudakramat@gmail.com
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61584016063330" target="_blank" rel="noopener" aria-label="Facebook MI Al Huda Kramat">
+        <span class="contact-icon">f</span> <strong>MI Al Huda Kramat</strong>
+      </a>
+    </div>
+  </div>
+  <p class="footer-copy">© <span id="year"></span> MI Al Huda Kramat</p>
 </footer>
 
 <script>
@@ -918,15 +957,16 @@ function newsUrl(key){
 
 function shareUrlForNews(key){
   const base=String(SHARE_API_URL||'').trim();
-  if(base && base.indexOf('GANTI_')!==0){
-    try{
-      const u=new URL(base);
-      u.search='';u.hash='';
-      u.searchParams.set('share',String(key));
-      return u.href;
-    }catch(e){}
+  if(!base || base.indexOf('GANTI_')===0) return newsUrl(key);
+  try{
+    const u=new URL(base);
+    u.search='';
+    u.hash='';
+    u.searchParams.set('share',String(key));
+    return u.href;
+  }catch(e){
+    return newsUrl(key);
   }
-  return newsUrl(key);
 }
 
 function findNews(key){
@@ -967,9 +1007,9 @@ async function copyNewsLink(key){
   const url=shareUrlForNews(key);
   try{
     await navigator.clipboard.writeText(url);
-    alert('Link berita berhasil disalin.');
+    alert('Link share berita berhasil disalin.');
   }catch(e){
-    window.prompt('Salin link berita berikut:',url);
+    window.prompt('Salin link share berita berikut:',url);
   }
 }
 
