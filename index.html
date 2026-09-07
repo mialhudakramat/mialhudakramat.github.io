@@ -736,7 +736,7 @@ footer{
    HELPER
 ========================================================= */
 const API_URL = 'https://script.google.com/macros/s/AKfycbyFNNMjDsAqXm8_pjia8yLN-u3vrQjCjSm8p6IGmwrcHOnCpNJjWM_ILgFjYGdahbYJ/exec';
-const SHARE_API_URL = API_URL;
+const PUBLIC_SITE_URL = 'https://mialhudakramat.github.io/';
 const $ = id => document.getElementById(id);
 
 let DATA = {};
@@ -948,25 +948,25 @@ function newsKey(item){
 }
 
 function newsUrl(key){
-  const u=new URL(location.href);
-  u.search='';
-  u.hash='';
-  u.searchParams.set('berita',String(key));
-  return u.href;
-}
-
-function shareUrlForNews(key){
-  const base=String(SHARE_API_URL||'').trim();
-  if(!base || base.indexOf('GANTI_')===0) return newsUrl(key);
+  const base=String(PUBLIC_SITE_URL||location.origin+'/').trim();
   try{
     const u=new URL(base);
     u.search='';
     u.hash='';
-    u.searchParams.set('share',String(key));
+    u.searchParams.set('berita',String(key));
     return u.href;
   }catch(e){
-    return newsUrl(key);
+    const u=new URL(location.href);
+    u.search='';
+    u.hash='';
+    u.searchParams.set('berita',String(key));
+    return u.href;
   }
+}
+
+// Link berita dan semua tombol berbagi diarahkan langsung ke GitHub Pages.
+function shareUrlForNews(key){
+  return newsUrl(key);
 }
 
 function findNews(key){
