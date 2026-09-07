@@ -737,6 +737,7 @@ footer{
 ========================================================= */
 const API_URL = 'https://script.google.com/macros/s/AKfycbyFNNMjDsAqXm8_pjia8yLN-u3vrQjCjSm8p6IGmwrcHOnCpNJjWM_ILgFjYGdahbYJ/exec';
 const PUBLIC_SITE_URL = 'https://mialhudakramat.github.io/';
+const SHARE_API_URL = 'https://script.google.com/macros/s/AKfycbyFNNMjDsAqXm8_pjia8yLN-u3vrQjCjSm8p6IGmwrcHOnCpNJjWM_ILgFjYGdahbYJ/exec';
 const $ = id => document.getElementById(id);
 
 let DATA = {};
@@ -964,9 +965,19 @@ function newsUrl(key){
   }
 }
 
-// Link berita dan semua tombol berbagi diarahkan langsung ke GitHub Pages.
+// URL halaman berita: langsung ke GitHub Pages.
 function shareUrlForNews(key){
-  return newsUrl(key);
+  const base=String(SHARE_API_URL||'').trim();
+  if(!base || base.indexOf('GANTI_')===0) return newsUrl(key);
+  try{
+    const u=new URL(base);
+    u.search='';
+    u.hash='';
+    u.searchParams.set('share',String(key));
+    return u.href;
+  }catch(e){
+    return newsUrl(key);
+  }
 }
 
 function findNews(key){
@@ -1048,7 +1059,7 @@ function openNews(key){
           <button class="news-action" type="button" onclick="copyNewsLink('${escapeHTML(newsKey(item))}')">🔗 Salin Link Berita</button>
           <a class="news-action" href="${escapeHTML(articleUrl)}" target="_blank" rel="noopener">↗ Buka Link</a>
         </div>
-        <div class="news-link-box"><div class="news-link-label">Link berita:</div>${escapeHTML(shareUrl)}</div>
+        <div class="news-link-box"><div class="news-link-label">Link untuk dibagikan (dengan preview):</div>${escapeHTML(shareUrl)}</div>
       </div>
       ${item.gambar?`<img class="detail-main-image" src="${escapeHTML(imageUrl(item.gambar))}" alt="${escapeHTML(item.judul||'')}" onerror="this.style.display='none'">`:''}
       <div class="detail-content">
