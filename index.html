@@ -749,18 +749,34 @@ function escapeHTML(value){
   }[c]));
 }
 
-/* Menerima URL Google Drive, URL biasa, atau ID file Drive */
+/* Menerima URL Google Drive, URL biasa, atau ID file Drive.
+ * URL Drive selalu dinormalisasi ke endpoint thumbnail agar dapat dipakai
+ * langsung sebagai src <img>. Resource key ikut dipertahankan bila ada.
+ */
 function imageUrl(value){
   let s = String(value ?? '').trim();
   if(!s) return '';
 
-  if(/^https?:\/\//i.test(s)) return s;
+  let id = '';
+  let resourceKey = '';
 
   if(/^[A-Za-z0-9_-]{20,}$/.test(s)){
-    return 'https://drive.google.com/thumbnail?id=' +
-      encodeURIComponent(s) + '&sz=w1600';
+    id = s;
+  }else if(/drive\.google\.com/i.test(s)){
+    const m = s.match(/[?&]id=([A-Za-z0-9_-]{20,})/) ||
+              s.match(/\/d\/([A-Za-z0-9_-]{20,})/);
+    if(m) id = m[1];
+    const rk = s.match(/[?&]resourcekey=([^&#]+)/i);
+    if(rk) resourceKey = rk[1];
   }
 
+  if(id){
+    return 'https://drive.google.com/thumbnail?id=' +
+      encodeURIComponent(id) + '&sz=w1600' +
+      (resourceKey ? '&resourcekey=' + encodeURIComponent(resourceKey) : '');
+  }
+
+  if(/^https?:\/\//i.test(s)) return s;
   return '';
 }
 
@@ -773,7 +789,8 @@ function imageHTML(url, alt, cls='card-image'){
            src="${escapeHTML(src)}"
            alt="${escapeHTML(alt || '')}"
            loading="lazy"
-           onerror="this.parentElement.style.display='none'">
+           data-fallback="1"
+           onerror="if(this.dataset.fallback==='1'){this.dataset.fallback='0';const m=this.src.match(/[?&]id=([^&]+)/);if(m)this.src='https://drive.google.com/uc?export=view&id='+m[1];else this.parentElement.style.display='none';}else{this.parentElement.style.display='none';}">
     </div>
   `;
 }
