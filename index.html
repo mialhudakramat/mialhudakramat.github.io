@@ -982,21 +982,30 @@ function newsUrl(key){
   }
 }
 
-// URL halaman berita: langsung ke GitHub Pages.
+// URL untuk dibagikan: SELALU halaman HTML statis di GitHub Pages.
+// Jangan gunakan URL Apps Script agar Facebook/WhatsApp dapat membaca
+// og:title, og:image, dan og:description langsung dari GitHub.
+function shareSlug(value){
+  return String(value ?? '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/^-+|-+$/g,'')
+    .slice(0,100);
+}
+
+function staticNewsShareUrl(item){
+  if(!item) return newsUrl('');
+  const key=newsKey(item);
+  const slug=shareSlug(item.slug || item.judul || 'berita') || 'berita';
+  const suffix=key ? '-' + String(key).slice(-8) : '';
+  return PUBLIC_SITE_URL.replace(/\/$/,'') + '/berita/' +
+    encodeURIComponent(slug + suffix + '.html');
+}
+
 function shareUrlForNews(key){
   const item=findNews(key);
-  if(item && item.shareUrl) return item.shareUrl;
-  const base=String(SHARE_API_URL||'').trim();
-  if(!base || base.indexOf('GANTI_')===0) return newsUrl(key);
-  try{
-    const u=new URL(base);
-    u.search='';
-    u.hash='';
-    u.searchParams.set('share',String(key));
-    return u.href;
-  }catch(e){
-    return newsUrl(key);
-  }
+  return staticNewsShareUrl(item);
 }
 
 function findNews(key){
