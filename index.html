@@ -1162,7 +1162,7 @@ function renderGaleri(data){
 function prestasiCard(item){
   return `
     <article class="card photo-card">
-      ${imageHTML(item.foto,item.judul)}
+      ${imageHTML(item.foto || item.gambar,item.judul)}
       <div class="card-body">
         <h3>${escapeHTML(item.judul || '')}</h3>
         <p><strong>${escapeHTML(item.siswa || '')}</strong>
