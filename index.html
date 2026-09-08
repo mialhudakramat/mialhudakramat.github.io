@@ -984,6 +984,8 @@ function newsUrl(key){
 
 // URL halaman berita: langsung ke GitHub Pages.
 function shareUrlForNews(key){
+  const item=findNews(key);
+  if(item && item.shareUrl) return item.shareUrl;
   const base=String(SHARE_API_URL||'').trim();
   if(!base || base.indexOf('GANTI_')===0) return newsUrl(key);
   try{
@@ -1012,7 +1014,8 @@ function newsCard(item){
         <p class="clamp-3">${escapeHTML(excerpt(item.isi,320))}</p>
         <a class="news-read" href="${escapeHTML(newsUrl(key))}" onclick="return openNewsFromLink(event,'${escapeHTML(key)}')">Baca selengkapnya →</a>
         <div class="news-actions">
-          <button class="news-action primary" type="button" onclick="shareNews('${escapeHTML(key)}');event.stopPropagation()">📤 Bagikan</button>
+          <button class="news-action primary" type="button" onclick="shareFacebook('${escapeHTML(key)}');event.stopPropagation()">📘 Facebook</button>
+          <button class="news-action" type="button" onclick="shareWhatsApp('${escapeHTML(key)}');event.stopPropagation()">💬 WhatsApp</button>
           <button class="news-action" type="button" onclick="copyNewsLink('${escapeHTML(key)}');event.stopPropagation()">🔗 Salin Link</button>
         </div>
       </div>
@@ -1041,6 +1044,19 @@ async function copyNewsLink(key){
   }
 }
 
+function shareFacebook(key){
+  const url=shareUrlForNews(key);
+  window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),'_blank','width=760,height=640,noopener');
+}
+
+function shareWhatsApp(key){
+  const item=findNews(key);
+  if(!item) return;
+  const url=shareUrlForNews(key);
+  const text=(item.judul||'Berita MI Al Huda Kramat')+' - MI Al Huda Kramat';
+  window.open('https://wa.me/?text='+encodeURIComponent(text+'\n'+url),'_blank','noopener');
+}
+
 function shareNews(key){
   const item=findNews(key);
   if(!item) return;
@@ -1050,8 +1066,7 @@ function shareNews(key){
     navigator.share({title:item.judul||'Berita MI Al Huda Kramat',text:text,url:url}).catch(()=>{});
     return;
   }
-  const wa='https://wa.me/?text='+encodeURIComponent(text+'\n'+url);
-  window.open(wa,'_blank','noopener');
+  shareFacebook(key);
 }
 
 /* =========================================================
@@ -1072,7 +1087,8 @@ function openNews(key){
         <div class="date">📅 ${escapeHTML(formatDate(item.tanggal))}${item.kategori?' · '+escapeHTML(item.kategori):''}</div>
         <h1>${escapeHTML(item.judul||'')}</h1>
         <div class="news-actions">
-          <button class="news-action primary" type="button" onclick="shareNews('${escapeHTML(newsKey(item))}')">📤 Bagikan ke Media Sosial</button>
+          <button class="news-action primary" type="button" onclick="shareFacebook('${escapeHTML(newsKey(item))}')">📘 Facebook</button>
+          <button class="news-action" type="button" onclick="shareWhatsApp('${escapeHTML(newsKey(item))}')">💬 WhatsApp</button>
           <button class="news-action" type="button" onclick="copyNewsLink('${escapeHTML(newsKey(item))}')">🔗 Salin Link Berita</button>
           <a class="news-action" href="${escapeHTML(articleUrl)}" target="_blank" rel="noopener">↗ Buka Link</a>
         </div>
