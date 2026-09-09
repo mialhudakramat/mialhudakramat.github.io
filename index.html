@@ -1061,9 +1061,11 @@ function shareFacebook(key){
 function shareWhatsApp(key){
   const item=findNews(key);
   if(!item) return;
+  // Kirim URL GitHub Pages sebagai satu-satunya link.
+  // WhatsApp kemudian mengambil og:title, og:description, dan og:image
+  // langsung dari halaman berita statis sehingga preview judul + foto muncul.
   const url=shareUrlForNews(key);
-  const text=(item.judul||'Berita MI Al Huda Kramat')+' - MI Al Huda Kramat';
-  window.open('https://wa.me/?text='+encodeURIComponent(text+'\n'+url),'_blank','noopener');
+  window.open('https://wa.me/?text='+encodeURIComponent(url),'_blank','noopener');
 }
 
 function shareNews(key){
