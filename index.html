@@ -397,6 +397,45 @@ footer{
 }
 
 /* =========================================================
+   GLOBAL CONTENT + SIDEBAR
+========================================================= */
+.hero{display:none}
+body.is-home .hero{display:flex}
+body.is-home .site-layout{height:calc(100vh - 540px);min-height:520px}
+.site-layout{max-width:1550px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:18px;padding:16px}
+.pages-main{min-width:0}
+.website-sidebar{min-width:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#0a805d #e9f1ed}
+.website-sidebar::-webkit-scrollbar{width:8px}
+.website-sidebar::-webkit-scrollbar-thumb{background:#0a805d;border-radius:10px}
+.website-sidebar::-webkit-scrollbar-track{background:#e9f1ed}
+body:not(.is-home) .site-layout{min-height:calc(100vh - 110px)}
+body:not(.is-home) .website-sidebar{position:sticky;top:68px;max-height:calc(100vh - 85px)}
+body:not(.is-home) .pages-main{overflow:visible}
+
+/* =========================================================
+   ALUMNI
+========================================================= */
+.alumni-wrap{max-width:1100px;margin:0 auto}
+.alumni-panel{background:#fff;border:1px solid #e1ebe6;border-radius:18px;padding:20px;box-shadow:0 8px 28px rgba(0,0,0,.06);margin-bottom:18px}
+.alumni-form-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:12px}
+.alumni-field label{display:block;font-size:12px;font-weight:900;color:#07543e;margin-bottom:5px}
+.alumni-field input,.alumni-field select,.alumni-field textarea{width:100%;padding:11px;border:1px solid #d6e3dd;border-radius:9px;font:inherit;background:#fff}
+.alumni-field textarea{min-height:90px;resize:vertical}
+.alumni-full{grid-column:1/-1}
+.alumni-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.alumni-btn{border:0;border-radius:9px;padding:10px 14px;background:#07543e;color:#fff;font-weight:900;cursor:pointer}
+.alumni-btn.gold{background:#f4c542;color:#17372d}.alumni-btn.gray{background:#65756e}.alumni-btn:disabled{opacity:.6;cursor:not-allowed}
+.alumni-result{margin-top:15px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.alumni-card{border:1px solid #e0eae5;border-radius:14px;padding:14px;background:#f9fcfa}
+.alumni-card h3{color:#07543e;font-size:16px;margin-bottom:8px}.alumni-meta{font-size:12px;color:#566760;line-height:1.7}.alumni-meta b{color:#07543e}
+.alumni-note{background:#f5faf7;border-left:4px solid #f4c542;padding:12px;color:#566760;font-size:12px;border-radius:8px;margin-top:12px}
+.alumni-status{font-size:12px;margin-top:10px;color:#07543e;font-weight:800}.alumni-hidden{display:none}
+.alumni-table-wrap{overflow:auto;margin-top:12px}.alumni-table{width:100%;border-collapse:collapse;min-width:980px}
+.alumni-table th{background:#07543e;color:#fff;padding:10px;text-align:left;font-size:12px;white-space:nowrap}.alumni-table td{padding:10px;border-bottom:1px solid #edf2ef;font-size:12px;vertical-align:top}.alumni-table tr:hover td{background:#f5faf7}
+.alumni-empty{padding:18px;text-align:center;color:#7b8984;background:#f8fbf9;border-radius:10px}.alumni-form-title{color:#07543e;font-size:18px;font-weight:900;margin-bottom:5px}.alumni-small{font-size:11px;color:#71817b;margin-bottom:14px}
+.alumni-badge{display:inline-block;padding:3px 7px;border-radius:99px;background:#e8f6ef;color:#07543e;font-size:9px;font-weight:900}
+
+/* =========================================================
    RESPONSIVE
 ========================================================= */
 @media(max-width:1050px){
@@ -406,6 +445,11 @@ footer{
 }
 @media(max-width:800px){
   body{overflow-y:auto}
+  .site-layout{display:block;padding:10px}
+  body.is-home .site-layout{height:auto;min-height:0}
+  body:not(.is-home) .website-sidebar{position:static;max-height:none;overflow:visible;margin-top:4px}
+  .alumni-form-grid,.alumni-result{grid-template-columns:1fr}
+  .alumni-full{grid-column:auto}
   .hero{min-height:100svh;height:100svh}
   .hero.compact{min-height:380px;height:380px}
   .hero-content{padding-top:18px}
@@ -472,6 +516,7 @@ footer{
       <a href="#galeri" data-route="galeri">🖼️ Galeri</a>
       <a href="#prestasi" data-route="prestasi">🏆 Prestasi</a>
       <a href="#ppdb" data-route="ppdb">📝 PPDB</a>
+      <a href="#alumni" data-route="alumni">🎓 Alumni</a>
       <a href="#profil" data-route="profil">🏫 Profil</a>
     </div>
   </div>
@@ -509,202 +554,116 @@ footer{
 
 
 <!-- =========================================================
-     BERANDA
+     KONTEN WEBSITE + SIDEBAR
 ========================================================= -->
-<section id="page-home" class="page active">
-  <div class="home-shell">
+<div class="site-layout">
+  <main class="pages-main">
 
-    <main class="main-scroll">
-
-      <section class="section">
-        <div class="section-title">
-          <h2>📰 Berita Terbaru</h2>
-          <div class="section-line"></div>
-          <p>Informasi terbaru MI Al Huda Kramat</p>
-        </div>
+    <!-- BERANDA -->
+    <section id="page-home" class="page active">
+      <div class="section">
+        <div class="section-title"><h2>📰 Berita Terbaru</h2><div class="section-line"></div><p>Informasi terbaru MI Al Huda Kramat</p></div>
         <div id="homeNewsGrid" class="grid"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-title">
-          <h2>🖼️ Galeri Kegiatan</h2>
-          <div class="section-line"></div>
-          <p>Dokumentasi kegiatan madrasah</p>
-        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><h2>🖼️ Galeri Kegiatan</h2><div class="section-line"></div><p>Dokumentasi kegiatan madrasah</p></div>
         <div id="homeGalleryGrid" class="grid"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-title">
-          <h2>🏆 Prestasi Siswa</h2>
-          <div class="section-line"></div>
-          <p>Prestasi dan penghargaan siswa</p>
-        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><h2>🏆 Prestasi Siswa</h2><div class="section-line"></div><p>Prestasi dan penghargaan siswa</p></div>
         <div id="homePrestasiGrid" class="grid"></div>
-      </section>
+      </div>
+    </section>
 
-    </main>
+    <!-- BERITA -->
+    <section id="page-berita" class="page">
+      <div class="section"><div class="section-title"><h2>📰 Berita MI Al Huda Kramat</h2><div class="section-line"></div><p>Berita dan informasi terbaru madrasah</p></div><div id="beritaGrid" class="grid"></div></div>
+    </section>
 
-    <aside class="sidebar-scroll">
+    <!-- DETAIL BERITA -->
+    <section id="page-detail-berita" class="page"><div class="section"><div id="detailBerita"></div></div></section>
 
-      <div class="sidebar-card">
-        <div class="sidebar-heading">
-          <div class="sidebar-heading-icon">📰</div>
-          <div><h3>Berita Terbaru</h3><p>Klik judul untuk membaca</p></div>
-        </div>
-        <div id="sidebarNews" class="sidebar-content">
-          <div class="sidebar-empty">Memuat berita...</div>
+    <!-- PENGUMUMAN -->
+    <section id="page-pengumuman" class="page">
+      <div class="section"><div class="section-title"><h2>📢 Pengumuman</h2><div class="section-line"></div><p>Informasi penting untuk siswa dan wali</p></div><div id="pengumumanGrid" class="grid"></div></div>
+    </section>
+
+    <!-- AGENDA -->
+    <section id="page-agenda" class="page">
+      <div class="section"><div class="section-title"><h2>📅 Agenda Madrasah</h2><div class="section-line"></div><p>Jadwal kegiatan MI Al Huda Kramat</p></div><div id="agendaGrid"></div></div>
+    </section>
+
+    <!-- GALERI -->
+    <section id="page-galeri" class="page">
+      <div class="section"><div class="section-title"><h2>🖼️ Galeri Madrasah</h2><div class="section-line"></div><p>Dokumentasi kegiatan madrasah</p></div><div id="galeriGrid" class="grid"></div></div>
+    </section>
+
+    <!-- PRESTASI -->
+    <section id="page-prestasi" class="page">
+      <div class="section"><div class="section-title"><h2>🏆 Prestasi Siswa</h2><div class="section-line"></div><p>Prestasi dan penghargaan siswa MI Al Huda Kramat</p></div><div id="prestasiGrid" class="grid"></div></div>
+    </section>
+
+    <!-- PPDB -->
+    <section id="page-ppdb" class="page">
+      <div class="section"><div class="section-title"><h2>📝 PPDB Online</h2><div class="section-line"></div><p>Penerimaan Peserta Didik Baru</p></div><div id="ppdbGrid" class="grid"></div></div>
+    </section>
+
+    <!-- ALUMNI -->
+    <section id="page-alumni" class="page">
+      <div class="section">
+        <div class="section-title"><h2>🎓 Penelusuran Alumni</h2><div class="section-line"></div><p>Telusuri dan lengkapi data alumni MI Al Huda Kramat</p></div>
+        <div class="alumni-wrap">
+          <div class="alumni-panel">
+            <div class="alumni-form-title">🔎 Cari Alumni</div><div class="alumni-small">Cari berdasarkan nama dan/atau tahun kelulusan.</div>
+            <div class="alumni-form-grid"><div class="alumni-field"><label>Nama Alumni</label><input id="alumniSearchName" type="text" placeholder="Contoh: Andri Rizal"></div><div class="alumni-field"><label>Tahun Kelulusan</label><input id="alumniSearchYear" type="number" min="1900" max="2100" placeholder="Contoh: 2009"></div></div>
+            <div class="alumni-actions"><button class="alumni-btn" type="button" onclick="searchAlumni()">🔍 Cari Alumni</button><button class="alumni-btn gray" type="button" onclick="showAlumniNewForm()">➕ Tambahkan Data Alumni</button></div><div id="alumniSearchResult"></div>
+          </div>
+          <div class="alumni-panel">
+            <div class="alumni-form-title">📋 Daftar Alumni Tahun</div><div class="alumni-small">Pilih tahun kelulusan untuk melihat seluruh alumni yang telah terverifikasi. Data kosong ditampilkan sebagai tanda -.</div>
+            <div class="alumni-form-grid"><div class="alumni-field"><label>Tahun Kelulusan</label><select id="alumniListYear"><option value="">Memuat daftar tahun...</option></select></div><div class="alumni-actions" style="align-items:end"><button class="alumni-btn gold" type="button" onclick="loadAlumniYear()">📋 Tampilkan Daftar</button><button class="alumni-btn gray" type="button" onclick="loadAlumniYears()">↻ Perbarui Tahun</button></div></div>
+            <div id="alumniYearCount" class="alumni-small" style="margin-top:8px"></div><div id="alumniYearResult"></div><div class="alumni-note"><b>Jika Anda membutuhkan data teman anda silahkan hubungi admin.</b></div>
+          </div>
+          <div id="alumniEditPanel" class="alumni-panel alumni-hidden">
+            <div class="alumni-form-title">✏️ Lengkapi Data Saya</div><div class="alumni-small">Lengkapi atau perbarui data Anda. Nama orang tua tidak digunakan untuk verifikasi.</div>
+            <div class="alumni-form-grid">
+              <div class="alumni-field"><label>Nama Lengkap *</label><input id="alumniEditName" type="text" readonly></div><div class="alumni-field"><label>Tahun Kelulusan *</label><input id="alumniEditYear" type="text" readonly></div>
+              <div class="alumni-field"><label>Jenis Kelamin</label><select id="alumniEditGender"><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></div><div class="alumni-field"><label>Tempat Lahir</label><input id="alumniEditBirthPlace" type="text"></div>
+              <div class="alumni-field"><label>Tanggal Lahir</label><input id="alumniEditBirthDate" type="date"></div><div class="alumni-field"><label>Nama Orang Tua</label><input id="alumniEditParent" type="text" placeholder="Opsional untuk memperbarui data"></div>
+              <div class="alumni-field alumni-full"><label>Alamat Sekarang</label><textarea id="alumniEditAddress" placeholder="Alamat tempat tinggal sekarang"></textarea></div><div class="alumni-field"><label>Nomor WhatsApp</label><input id="alumniEditWA" type="text" placeholder="Isi jika ingin mengganti nomor"></div>
+              <div class="alumni-field"><label>Pendidikan Terakhir</label><input id="alumniEditEducation" type="text" placeholder="Contoh: SMA/SMK, D3, S1"></div><div class="alumni-field alumni-full"><label>Pekerjaan</label><input id="alumniEditJob" type="text" placeholder="Pekerjaan saat ini"></div>
+            </div>
+            <div class="alumni-actions"><button id="alumniEditSave" class="alumni-btn" type="button" onclick="saveAlumniUpdate()">💾 Simpan Perubahan</button><button class="alumni-btn gray" type="button" onclick="hideAlumniForms()">Tutup</button></div><div id="alumniEditStatus" class="alumni-status"></div>
+          </div>
+          <div id="alumniNewPanel" class="alumni-panel alumni-hidden">
+            <div class="alumni-form-title">➕ Daftar Alumni Baru</div><div class="alumni-small">Lengkapi data berikut. Data baru akan masuk sebagai <b>PENDING</b> dan ditampilkan setelah diverifikasi admin.</div>
+            <div class="alumni-form-grid">
+              <div class="alumni-field"><label>Nama Lengkap *</label><input id="alumniNewName" type="text"></div><div class="alumni-field"><label>Tahun Kelulusan *</label><input id="alumniNewYear" type="number" min="1900" max="2100"></div>
+              <div class="alumni-field"><label>Jenis Kelamin</label><select id="alumniNewGender"><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></div><div class="alumni-field"><label>Tempat Lahir</label><input id="alumniNewBirthPlace" type="text"></div>
+              <div class="alumni-field"><label>Tanggal Lahir</label><input id="alumniNewBirthDate" type="date"></div><div class="alumni-field"><label>Nama Orang Tua</label><input id="alumniNewParent" type="text" placeholder="Disimpan sebagai data alumni, tidak untuk verifikasi"></div>
+              <div class="alumni-field alumni-full"><label>Alamat Sekarang</label><textarea id="alumniNewAddress"></textarea></div><div class="alumni-field"><label>Nomor WhatsApp</label><input id="alumniNewWA" type="text" placeholder="Boleh dikosongkan"></div>
+              <div class="alumni-field"><label>Pendidikan Terakhir</label><input id="alumniNewEducation" type="text" placeholder="Contoh: SMA/SMK, D3, S1"></div><div class="alumni-field alumni-full"><label>Pekerjaan</label><input id="alumniNewJob" type="text" placeholder="Pekerjaan saat ini"></div>
+            </div>
+            <div class="alumni-actions"><button id="alumniNewSave" class="alumni-btn gold" type="button" onclick="saveNewAlumni()">💾 Kirim Data</button><button class="alumni-btn gray" type="button" onclick="hideAlumniForms()">Tutup</button></div><div id="alumniNewStatus" class="alumni-status"></div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="sidebar-card">
-        <div class="sidebar-heading">
-          <div class="sidebar-heading-icon">📸</div>
-          <div><h3>Foto Kegiatan</h3><p>Foto dari berita</p></div>
-        </div>
-        <div id="sidebarNewsSlider" class="sidebar-slider">
-          <div class="sidebar-empty">Memuat foto...</div>
-        </div>
-      </div>
+    <!-- PROFIL -->
+    <section id="page-profil" class="page">
+      <div class="section"><div class="section-title"><h2>🏫 Profil Madrasah</h2><div class="section-line"></div><p>Informasi lengkap MI Al Huda Kramat</p></div><div id="profilBox" class="profile-grid"></div></div>
+    </section>
+  </main>
 
-      <div class="sidebar-card">
-        <div class="sidebar-heading">
-          <div class="sidebar-heading-icon">📅</div>
-          <div><h3>Agenda Madrasah</h3><p>Kegiatan mendatang</p></div>
-        </div>
-        <div id="sidebarAgenda" class="sidebar-content">
-          <div class="sidebar-empty">Memuat agenda...</div>
-        </div>
-      </div>
-
-      <div class="sidebar-card">
-        <div class="sidebar-heading">
-          <div class="sidebar-heading-icon">🖼️</div>
-          <div><h3>Galeri Foto</h3><p>Dokumentasi madrasah</p></div>
-        </div>
-        <div id="sidebarGallery" class="sidebar-slider">
-          <div class="sidebar-empty">Memuat galeri...</div>
-        </div>
-      </div>
-
-      <div class="sidebar-card">
-        <div class="sidebar-heading">
-          <div class="sidebar-heading-icon">📆</div>
-          <div><h3>Kalender Pendidikan</h3><p>Kalender berjalan</p></div>
-        </div>
-        <div id="educationCalendar"></div>
-      </div>
-
-    </aside>
-  </div>
-</section>
-
-<!-- =========================================================
-     HALAMAN BERITA
-========================================================= -->
-<section id="page-berita" class="page">
-  <div class="section">
-    <div class="section-title">
-      <h2>📰 Berita MI Al Huda Kramat</h2>
-      <div class="section-line"></div>
-      <p>Berita dan informasi terbaru madrasah</p>
-    </div>
-    <div id="beritaGrid" class="grid"></div>
-  </div>
-</section>
-
-<!-- =========================================================
-     DETAIL BERITA
-========================================================= -->
-<section id="page-detail-berita" class="page">
-  <div class="section">
-    <div id="detailBerita"></div>
-  </div>
-</section>
-
-<!-- =========================================================
-     HALAMAN PENGUMUMAN
-========================================================= -->
-<section id="page-pengumuman" class="page">
-  <div class="section">
-    <div class="section-title">
-      <h2>📢 Pengumuman</h2>
-      <div class="section-line"></div>
-      <p>Informasi penting untuk siswa dan wali</p>
-    </div>
-    <div id="pengumumanGrid" class="grid"></div>
-  </div>
-</section>
-
-<!-- =========================================================
-     HALAMAN AGENDA
-========================================================= -->
-<section id="page-agenda" class="page">
-  <div class="section">
-    <div class="section-title">
-      <h2>📅 Agenda Madrasah</h2>
-      <div class="section-line"></div>
-      <p>Jadwal kegiatan MI Al Huda Kramat</p>
-    </div>
-    <div id="agendaGrid"></div>
-  </div>
-</section>
-
-<!-- =========================================================
-     HALAMAN GALERI
-========================================================= -->
-<section id="page-galeri" class="page">
-  <div class="section">
-    <div class="section-title">
-      <h2>🖼️ Galeri Madrasah</h2>
-      <div class="section-line"></div>
-      <p>Dokumentasi kegiatan madrasah</p>
-    </div>
-    <div id="galeriGrid" class="grid"></div>
-  </div>
-</section>
-
-<!-- =========================================================
-     HALAMAN PRESTASI
-========================================================= -->
-<section id="page-prestasi" class="page">
-  <div class="section">
-    <div class="section-title">
-      <h2>🏆 Prestasi Siswa</h2>
-      <div class="section-line"></div>
-      <p>Prestasi dan penghargaan siswa MI Al Huda Kramat</p>
-    </div>
-    <div id="prestasiGrid" class="grid"></div>
-  </div>
-</section>
-
-<!-- =========================================================
-     HALAMAN PPDB
-========================================================= -->
-<section id="page-ppdb" class="page">
-  <div class="section">
-    <div class="section-title">
-      <h2>📝 PPDB Online</h2>
-      <div class="section-line"></div>
-      <p>Penerimaan Peserta Didik Baru</p>
-    </div>
-    <div id="ppdbGrid" class="grid"></div>
-  </div>
-</section>
-
-<!-- =========================================================
-     HALAMAN PROFIL
-========================================================= -->
-<section id="page-profil" class="page">
-  <div class="section">
-    <div class="section-title">
-      <h2>🏫 Profil Madrasah</h2>
-      <div class="section-line"></div>
-      <p>Informasi lengkap MI Al Huda Kramat</p>
-    </div>
-    <div id="profilBox" class="profile-grid"></div>
-  </div>
-</section>
+  <!-- SIDEBAR GLOBAL -->
+  <aside class="website-sidebar">
+    <div class="sidebar-card"><div class="sidebar-heading"><div class="sidebar-heading-icon">📰</div><div><h3>Berita Terbaru</h3><p>3 judul berita terbaru</p></div></div><div id="sidebarNews" class="sidebar-content"><div class="sidebar-empty">Memuat berita...</div></div></div>
+    <div class="sidebar-card"><div class="sidebar-heading"><div class="sidebar-heading-icon">📸</div><div><h3>Foto Kegiatan</h3><p>Foto dari berita</p></div></div><div id="sidebarNewsSlider" class="sidebar-slider"><div class="sidebar-empty">Memuat foto...</div></div></div>
+    <div class="sidebar-card"><div class="sidebar-heading"><div class="sidebar-heading-icon">📅</div><div><h3>Agenda Madrasah</h3><p>Kegiatan mendatang</p></div></div><div id="sidebarAgenda" class="sidebar-content"><div class="sidebar-empty">Memuat agenda...</div></div></div>
+    <div class="sidebar-card"><div class="sidebar-heading"><div class="sidebar-heading-icon">🖼️</div><div><h3>Galeri Foto</h3><p>Dokumentasi madrasah</p></div></div><div id="sidebarGallery" class="sidebar-slider"><div class="sidebar-empty">Memuat galeri...</div></div></div>
+    <div class="sidebar-card"><div class="sidebar-heading"><div class="sidebar-heading-icon">📆</div><div><h3>Kalender Pendidikan</h3><p>Kalender berjalan</p></div></div><div id="educationCalendar"></div></div>
+  </aside>
+</div>
 
 <footer>
   <div class="footer-inner">
@@ -861,7 +820,7 @@ function closeMenu(){
 function routeFromHash(){
   const hash = location.hash.replace(/^#/,'').trim();
   if(hash === 'detail-berita') return 'detail-berita';
-  return ['home','berita','pengumuman','agenda','galeri','prestasi','ppdb','profil'].includes(hash)
+  return ['home','berita','pengumuman','agenda','galeri','prestasi','ppdb','alumni','profil'].includes(hash)
     ? hash : 'home';
 }
 
@@ -871,6 +830,7 @@ function go(route){
 
 function showPage(route){
   currentRoute = route;
+  document.body.classList.toggle('is-home', route === 'home');
 
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
@@ -1532,6 +1492,28 @@ function changeCalendarMonth(step){
 }
 
 /* =========================================================
+   ALUMNI - VERSI GITHUB PAGES
+========================================================= */
+let selectedAlumni = null;
+function valAlumni(v){return escapeHTML(v===null||v===undefined||String(v).trim()===''?'-':v)}
+function formatAlumniDate(v){return v?escapeHTML(formatDate(v)||v):'-'}
+function renderAlumniSearchResults(list){
+  const box=$('alumniSearchResult'); if(!box)return;
+  if(!Array.isArray(list)||!list.length){box.innerHTML='<div class="alumni-empty" style="margin-top:14px">Data alumni tidak ditemukan.<br><br>Jika Anda belum terdaftar, silakan gunakan tombol <b>Tambahkan Data Alumni</b>.</div>';return;}
+  box.innerHTML='<div class="alumni-result">'+list.map(item=>`<div class="alumni-card"><h3>${valAlumni(item.nama)}</h3><div class="alumni-meta"><div><b>Tahun Lulus:</b> ${valAlumni(item.tahunLulus)}</div><div><b>Jenis Kelamin:</b> ${valAlumni(item.jenisKelamin)}</div><div><b>Tempat Lahir:</b> ${valAlumni(item.tempatLahir)}</div><div><b>Tanggal Lahir:</b> ${formatAlumniDate(item.tanggalLahir)}</div><div><b>Nama Orang Tua:</b> ${valAlumni(item.namaOrangTua)}</div><div><b>Alamat Sekarang:</b> ${valAlumni(item.alamatSekarang)}</div><div><b>Nomor WhatsApp:</b> ${valAlumni(item.whatsapp)}</div><div><b>Pendidikan Terakhir:</b> ${valAlumni(item.pendidikanTerakhir)}</div><div><b>Pekerjaan:</b> ${valAlumni(item.pekerjaan)}</div></div><div class="alumni-actions"><span class="alumni-badge">✓ TERVERIFIKASI</span><button class="alumni-btn" type="button" data-alumni-edit="${escapeHTML(item.id||'')}">✏️ Lengkapi Data Saya</button></div></div>`).join('')+'</div>';
+  box.querySelectorAll('[data-alumni-edit]').forEach(btn=>btn.addEventListener('click',()=>{const item=list.find(x=>String(x.id)===String(btn.dataset.alumniEdit));if(item)openAlumniEdit(item)}));
+}
+function searchAlumni(){const nama=$('alumniSearchName').value.trim().toLowerCase(),tahun=$('alumniSearchYear').value.trim();if(!nama&&!tahun){$('alumniSearchResult').innerHTML='<div class="alumni-empty" style="margin-top:14px">Masukkan nama atau tahun kelulusan.</div>';return;}const list=(DATA.Alumni||[]).filter(x=>(!nama||String(x.nama||'').toLowerCase().includes(nama))&&(!tahun||String(x.tahunLulus||'')===tahun)).slice(0,30);renderAlumniSearchResults(list)}
+function loadAlumniYears(){const years=[...new Set((DATA.Alumni||[]).map(x=>String(x.tahunLulus||'').trim()).filter(y=>/^(19|20)\d{2}$/.test(y)))].sort((a,b)=>Number(a)-Number(b));const sel=$('alumniListYear'),current=sel.value;if(!years.length){sel.innerHTML='<option value="">Belum ada tahun alumni</option>';$('alumniYearCount').textContent='Belum ada alumni yang terverifikasi.';return}sel.innerHTML='<option value="">Pilih tahun kelulusan</option>'+years.map(y=>`<option value="${escapeHTML(y)}">${escapeHTML(y)}</option>`).join('');if(current&&years.includes(current))sel.value=current;$('alumniYearCount').textContent=`Tersedia ${years.length} angkatan/tahun kelulusan.`}
+function loadAlumniYear(){const year=$('alumniListYear').value.trim();if(!year){$('alumniYearResult').innerHTML='<div class="alumni-empty">Pilih tahun kelulusan terlebih dahulu.</div>';return}const list=(DATA.Alumni||[]).filter(x=>String(x.tahunLulus||'')===year).sort((a,b)=>String(a.nama||'').localeCompare(String(b.nama||'')));if(!list.length){$('alumniYearResult').innerHTML=`<div class="alumni-empty">Belum ada data alumni terverifikasi untuk tahun ${escapeHTML(year)}.</div>`;return}$('alumniYearCount').textContent=`Tahun ${escapeHTML(year)}: ${list.length} alumni terverifikasi.`;$('alumniYearResult').innerHTML=`<div class="alumni-table-wrap"><table class="alumni-table"><thead><tr><th>No</th><th>Nama</th><th>Jenis Kelamin</th><th>Tempat Lahir</th><th>Tanggal Lahir</th><th>Nama Orang Tua</th><th>Alamat Sekarang</th><th>No. WhatsApp</th><th>Pendidikan Terakhir</th><th>Pekerjaan</th></tr></thead><tbody>${list.map((item,i)=>`<tr><td>${i+1}</td><td><b>${valAlumni(item.nama)}</b></td><td>${valAlumni(item.jenisKelamin)}</td><td>${valAlumni(item.tempatLahir)}</td><td>${formatAlumniDate(item.tanggalLahir)}</td><td>${valAlumni(item.namaOrangTua)}</td><td>${valAlumni(item.alamatSekarang)}</td><td>${valAlumni(item.whatsapp)}</td><td>${valAlumni(item.pendidikanTerakhir)}</td><td>${valAlumni(item.pekerjaan)}</td></tr>`).join('')}</tbody></table></div>`}
+function hideAlumniForms(){$('alumniEditPanel').classList.add('alumni-hidden');$('alumniNewPanel').classList.add('alumni-hidden');selectedAlumni=null}
+function showAlumniNewForm(){hideAlumniForms();$('alumniNewPanel').classList.remove('alumni-hidden');$('alumniNewStatus').textContent='';$('alumniNewPanel').scrollIntoView({behavior:'smooth',block:'start'})}
+function openAlumniEdit(item){hideAlumniForms();selectedAlumni=item;$('alumniEditName').value=item.nama||'';$('alumniEditYear').value=item.tahunLulus||'';$('alumniEditGender').value=item.jenisKelamin||'';$('alumniEditBirthPlace').value=item.tempatLahir||'';$('alumniEditBirthDate').value=item.tanggalLahir||'';$('alumniEditParent').value='';$('alumniEditAddress').value=item.alamatSekarang||'';$('alumniEditWA').value='';$('alumniEditEducation').value=item.pendidikanTerakhir||'';$('alumniEditJob').value=item.pekerjaan||'';$('alumniEditStatus').textContent='';$('alumniEditPanel').classList.remove('alumni-hidden');$('alumniEditPanel').scrollIntoView({behavior:'smooth',block:'start'})}
+function alumniApi(action,payload,onSuccess,onError){const cb='alumniCb_'+Date.now()+'_'+Math.random().toString(36).slice(2);window[cb]=function(data){try{if(data&&data.success===false)throw new Error(data.message||'Permintaan gagal.');onSuccess(data)}catch(e){if(onError)onError(e)}finally{try{delete window[cb]}catch(e){}}};const script=document.createElement('script');const params=new URLSearchParams();params.set('api','alumni');params.set('action',action);params.set('callback',cb);if(payload)params.set('data',JSON.stringify(payload));script.src=API_URL+'?'+params.toString();script.onerror=()=>{try{delete window[cb]}catch(e){}if(onError)onError(new Error('Server alumni tidak dapat diakses.'))};document.body.appendChild(script)}
+function saveNewAlumni(){const data={nama:$('alumniNewName').value.trim(),tahunLulus:$('alumniNewYear').value.trim(),jenisKelamin:$('alumniNewGender').value,tempatLahir:$('alumniNewBirthPlace').value.trim(),tanggalLahir:$('alumniNewBirthDate').value,namaOrangTua:$('alumniNewParent').value.trim(),alamatSekarang:$('alumniNewAddress').value.trim(),whatsapp:$('alumniNewWA').value.trim(),pendidikanTerakhir:$('alumniNewEducation').value.trim(),pekerjaan:$('alumniNewJob').value.trim()};if(!data.nama||!/^(19|20)\d{2}$/.test(data.tahunLulus)){$('alumniNewStatus').textContent='Nama lengkap dan tahun kelulusan wajib diisi dengan benar.';return}$('alumniNewSave').disabled=true;$('alumniNewStatus').textContent='⏳ Mengirim data...';alumniApi('add',data,res=>{$('alumniNewSave').disabled=false;$('alumniNewStatus').textContent=res.message||'Data berhasil dikirim.';['alumniNewName','alumniNewYear','alumniNewBirthPlace','alumniNewBirthDate','alumniNewParent','alumniNewAddress','alumniNewWA','alumniNewEducation','alumniNewJob'].forEach(id=>$(id).value='');$('alumniNewGender').value='';},err=>{$('alumniNewSave').disabled=false;$('alumniNewStatus').textContent='❌ '+(err.message||err)})}
+function saveAlumniUpdate(){if(!selectedAlumni)return;const payload={nama:selectedAlumni.nama,tahunLulus:selectedAlumni.tahunLulus,namaOrangTua:$('alumniEditParent').value.trim(),jenisKelamin:$('alumniEditGender').value,tempatLahir:$('alumniEditBirthPlace').value.trim(),tanggalLahir:$('alumniEditBirthDate').value,alamatSekarang:$('alumniEditAddress').value.trim(),whatsapp:$('alumniEditWA').value.trim(),pendidikanTerakhir:$('alumniEditEducation').value.trim(),pekerjaan:$('alumniEditJob').value.trim()};$('alumniEditSave').disabled=true;$('alumniEditStatus').textContent='⏳ Menyimpan...';alumniApi('update',payload,res=>{$('alumniEditSave').disabled=false;$('alumniEditStatus').textContent=res.message||'Data berhasil diperbarui.';setTimeout(()=>{hideAlumniForms();loadPublicData(true)},1400)},err=>{$('alumniEditSave').disabled=false;$('alumniEditStatus').textContent='❌ '+(err.message||err)})}
+
+/* =========================================================
    RENDER SEMUA DATA
 ========================================================= */
 function renderWebsite(data){
@@ -1548,6 +1530,7 @@ function renderWebsite(data){
   renderGaleri(DATA);
   renderPrestasi(DATA);
   renderPPDB(DATA);
+  loadAlumniYears();
 
   renderSidebarNews(DATA.Berita || []);
   renderSidebarNewsSlider(DATA.Berita || []);
@@ -1595,8 +1578,8 @@ window.addEventListener('hashchange',()=>{
 ========================================================= */
 $('year').textContent = new Date().getFullYear();
 
-function loadPublicData(){
-  const callbackName='miHudaCallback_'+Date.now();
+function loadPublicData(silent=false){
+  const callbackName='miHudaCallback_'+Date.now()+'_'+Math.random().toString(36).slice(2);
   window[callbackName]=function(data){
     try{ renderWebsite(data); openNewsFromQuery(); }
     finally{ try{ delete window[callbackName]; }catch(e){} }
