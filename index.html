@@ -401,16 +401,77 @@ footer{
 ========================================================= */
 .hero{display:none}
 body.is-home .hero{display:flex}
-body.is-home .site-layout{height:calc(100vh - 540px);min-height:520px}
-.site-layout{max-width:1550px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:18px;padding:16px}
-.pages-main{min-width:0}
-.website-sidebar{min-width:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#0a805d #e9f1ed}
+
+/* FIX: Beranda tidak lagi memakai tinggi tetap.
+   Konten utama menentukan tinggi layout sehingga footer
+   selalu berada setelah seluruh isi halaman. */
+body.is-home .site-layout{
+  height:auto;
+  min-height:520px;
+  align-items:start;
+}
+.site-layout{
+  max-width:1550px;margin:0 auto;display:grid;
+  grid-template-columns:minmax(0,1fr) 350px;
+  gap:18px;padding:16px;
+}
+.pages-main{min-width:0;overflow:visible}
+
+/* Sidebar dibuat lebih kontras dan lebih menonjol,
+   tanpa mengubah isi/fungsinya. */
+.website-sidebar{
+  min-width:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:#f4c542 #d8e7e1;
+  background:linear-gradient(180deg,#e0eee9 0%,#cbded6 100%);
+  border:1px solid #8fb8aa;
+  border-radius:20px;
+  padding:10px;
+  box-shadow:0 10px 30px rgba(0,59,42,.14);
+}
 .website-sidebar::-webkit-scrollbar{width:8px}
-.website-sidebar::-webkit-scrollbar-thumb{background:#0a805d;border-radius:10px}
-.website-sidebar::-webkit-scrollbar-track{background:#e9f1ed}
+.website-sidebar::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,#f4c542,#d8a927);
+  border-radius:10px;
+}
+.website-sidebar::-webkit-scrollbar-track{background:#d8e7e1}
+.website-sidebar .sidebar-card{
+  border:1px solid rgba(0,84,62,.18);
+  box-shadow:0 7px 20px rgba(0,59,42,.12);
+}
+.website-sidebar .sidebar-heading{
+  background:linear-gradient(135deg,#004b37,#008463);
+  border-bottom:3px solid #f4c542;
+}
+.website-sidebar .sidebar-content,
+.website-sidebar .sidebar-slider,
+.website-sidebar #educationCalendar{
+  background:#fff;
+}
+.website-sidebar .sidebar-news-item:hover{background:#edf8f3}
+
+body.is-home .website-sidebar{
+  position:sticky;
+  top:68px;
+  max-height:calc(100vh - 90px);
+}
 body:not(.is-home) .site-layout{min-height:calc(100vh - 110px)}
-body:not(.is-home) .website-sidebar{position:sticky;top:68px;max-height:calc(100vh - 85px)}
+body:not(.is-home) .website-sidebar{
+  position:sticky;
+  top:68px;
+  max-height:calc(100vh - 85px);
+}
 body:not(.is-home) .pages-main{overflow:visible}
+
+/* Footer selalu berada setelah seluruh konten Beranda. */
+footer{
+  position:relative;
+  z-index:5;
+  clear:both;
+  margin-top:8px;
+}
 
 /* =========================================================
    ALUMNI
