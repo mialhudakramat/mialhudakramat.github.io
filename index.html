@@ -520,7 +520,17 @@ footer{
 .alumni-result{margin-top:15px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .alumni-card{border:1px solid #e0eae5;border-radius:14px;padding:14px;background:#f9fcfa}
 .alumni-card h3{color:#07543e;font-size:16px;margin-bottom:8px}.alumni-meta{font-size:12px;color:#566760;line-height:1.7}.alumni-meta b{color:#07543e}
-.alumni-note{background:#f5faf7;border-left:4px solid #f4c542;padding:12px;color:#566760;font-size:12px;border-radius:8px;margin-top:12px}
+.alumni-note{
+  font-size:20px !important;
+  font-weight:800 !important;
+  line-height:1.5;
+  animation:alumniBlink 1.2s infinite;
+}
+
+@keyframes alumniBlink{
+  0%,100%{opacity:1;}
+  50%{opacity:0.25;}
+}
 .alumni-status{font-size:12px;margin-top:10px;color:#07543e;font-weight:800}.alumni-hidden{display:none}
 .alumni-table-wrap{overflow:auto;margin-top:12px}.alumni-table{width:100%;border-collapse:collapse;min-width:980px}
 .alumni-table th{background:#07543e;color:#fff;padding:10px;text-align:left;font-size:12px;white-space:nowrap}.alumni-table td{padding:10px;border-bottom:1px solid #edf2ef;font-size:12px;vertical-align:top}.alumni-table tr:hover td{background:#f5faf7}
