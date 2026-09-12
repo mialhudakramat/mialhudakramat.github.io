@@ -396,6 +396,37 @@ footer{
   .footer-contact a{justify-content:center}
 }
 
+
+/* =========================================================
+   BANNER HALAMAN ALUMNI
+   Hanya berada di area konten utama, tidak mempengaruhi sidebar.
+========================================================= */
+.alumni-banner{
+  width:100%;
+  margin:0 0 18px;
+  border-radius:18px;
+  overflow:hidden;
+  background:#fff;
+  border:1px solid #d8e7e1;
+  box-shadow:0 8px 24px rgba(0,59,42,.10);
+}
+.alumni-banner img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:260px;
+  object-fit:cover;
+}
+@media(max-width:800px){
+  .alumni-banner{
+    margin-bottom:14px;
+    border-radius:14px;
+  }
+  .alumni-banner img{
+    max-height:none;
+  }
+}
+
 /* =========================================================
    GLOBAL CONTENT + SIDEBAR
 ========================================================= */
@@ -672,6 +703,9 @@ footer{
     <!-- ALUMNI -->
     <section id="page-alumni" class="page">
       <div class="section">
+        <div class="alumni-banner">
+          <img src="images/baner-web-alumni.png" alt="Bagi kawan-kawan alumni MI Al Huda Kramat">
+        </div>
         <div class="section-title"><h2>🎓 Penelusuran Alumni</h2><div class="section-line"></div><p>Telusuri dan lengkapi data alumni MI Al Huda Kramat</p></div>
         <div class="alumni-wrap">
           <div class="alumni-panel">
@@ -682,7 +716,7 @@ footer{
           <div class="alumni-panel">
             <div class="alumni-form-title">📋 Daftar Alumni Tahun</div><div class="alumni-small">Pilih tahun kelulusan untuk melihat seluruh alumni yang telah terverifikasi. Data kosong ditampilkan sebagai tanda -.</div>
             <div class="alumni-form-grid"><div class="alumni-field"><label>Tahun Kelulusan</label><select id="alumniListYear"><option value="">Memuat daftar tahun...</option></select></div><div class="alumni-actions" style="align-items:end"><button class="alumni-btn gold" type="button" onclick="loadAlumniYear()">📋 Tampilkan Daftar</button><button class="alumni-btn gray" type="button" onclick="loadAlumniYears()">↻ Perbarui Tahun</button></div></div>
-            <div id="alumniYearCount" class="alumni-small" style="margin-top:20px"></div><div id="alumniYearResult"></div><div class="alumni-note"><b>Jika Anda membutuhkan data teman anda silahkan hubungi admin.</b></div>
+            <div id="alumniYearCount" class="alumni-small" style="margin-top:25px"></div><div id="alumniYearResult"></div><div class="alumni-note"><b>Jika Anda membutuhkan data teman anda silahkan hubungi admin.</b></div>
           </div>
           <div id="alumniEditPanel" class="alumni-panel alumni-hidden">
             <div class="alumni-form-title">✏️ Lengkapi Data Saya</div><div class="alumni-small">Lengkapi atau perbarui data Anda. Nama orang tua tidak digunakan untuk verifikasi.</div>
